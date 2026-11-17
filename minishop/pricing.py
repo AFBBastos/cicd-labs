@@ -124,7 +124,7 @@ def quote(items: list[dict], coupon: str | None = None) -> Quote:
         q.discount = Decimal("0.00")  # STU15 ne s'applique pas si remise volume
     else:
         q.discount = coupon_discount(q.subtotal, coupon) if q.lines else Decimal("0.00")
-    
+
     after = q.subtotal - q.discount
     q.shipping = shipping_cost(after, coupon, empty=not q.lines)
     q.total = money(after + q.shipping)

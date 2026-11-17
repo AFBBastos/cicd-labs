@@ -165,4 +165,3 @@ def test_student15_is_ignored_when_bulk_discount_applies():
     """STUDENT15 est non cumulable avec la remise volume sur une même ligne."""
     q = quote([{"product_id": "mug", "qty": 10}], coupon="STUDENT15")
     assert q.discount == Decimal("0.00")
-    
