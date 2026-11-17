@@ -1,5 +1,8 @@
 """Prédiction des zones à risque à partir de l'historique Git (apprentissage SUPERVISÉ).
 
+SOLUTION Atelier 6, étape 4 : seule différence avec la version du dépôt stagiaires, la table
+fichier -> tests est lue dans reports/test_map.json (déduite de la couverture) quand ce fichier existe.
+
 Idée : chaque ligne de data/git-history.csv = (commit, fichier modifié, caractéristiques)
 avec l'étiquette `broke_ci` (ce commit a-t-il cassé la CI ?). On entraîne un modèle qui,
 pour un NOUVEAU changement, estime la probabilité de casse -> on priorise les tests
@@ -52,6 +55,14 @@ TEST_MAP = {
     "minishop/api.py": ["tests/api", "tests/e2e"],
     "minishop/static/": ["tests/e2e", "tests/visual"],
 }
+TEST_MAP_FILE = Path("reports/test_map.json")  # produite par ai_tools/coverage_test_map.py (Atelier 6, étape 4)
+
+
+def load_test_map() -> dict[str, list[str]]:
+    """Table déduite de la couverture si elle existe, sinon la table manuelle."""
+    if TEST_MAP_FILE.exists():
+        return json.loads(TEST_MAP_FILE.read_text(encoding="utf-8"))
+    return TEST_MAP
 
 
 def load(path: Path) -> list[dict]:
@@ -167,8 +178,9 @@ def predict(files: list[tuple[str, int, int]], author: str, hour: int) -> int:
         scored.append((f, float(m.predict_proba(np.array(x, dtype=float))[0, 1])))
     scored.sort(key=lambda t: -t[1])
     order: list[str] = []
+    mapping = load_test_map()
     for f, _ in scored:
-        for prefix, tests in TEST_MAP.items():
+        for prefix, tests in mapping.items():
             if f.startswith(prefix):
                 order += [t for t in tests if t not in order]
     print("Risque estimé par fichier modifié :")
