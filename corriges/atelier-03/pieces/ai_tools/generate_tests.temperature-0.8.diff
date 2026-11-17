@@ -1,0 +1,11 @@
+--- a/ai_tools/generate_tests.py
++++ b/ai_tools/generate_tests.py
+@@ -131,7 +131,7 @@
+     if out is not None:
+         # Java, PHP et C# exigent que la classe porte le nom du fichier ; Node.js a besoin du chemin relatif.
+         user += f" Il sera enregistré dans `{out}` : nomme la classe et écris les chemins d'import en conséquence."
+-    return extract_code(chat(system, user), fence)
++    return extract_code(chat(system, user, temperature=0.8), fence)
+ 
+ 
+ def generate_other_language(args: argparse.Namespace, spec: str) -> int:
