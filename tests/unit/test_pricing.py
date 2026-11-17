@@ -20,6 +20,12 @@ def test_money_arrondi_commercial():
     assert money("0.125") == Decimal("0.13")
 
 
+def test_money_arrondi_bug_injecte(monkeypatch):
+    """On peut activer le bug injecté pour vérifier le chemin MINISHOP_BUG=rounding."""
+    monkeypatch.setenv("MINISHOP_BUG", "rounding")
+    assert money("0.125") == Decimal("0.12")
+
+
 # ---------------------------------------------------------------------------
 # 2) Calcul d'une ligne
 # ---------------------------------------------------------------------------
