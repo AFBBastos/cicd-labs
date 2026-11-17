@@ -1,0 +1,15 @@
+diff --git a/minishop/pricing.py b/minishop/pricing.py
+index 4780da1..e56f30d 100644
+--- a/minishop/pricing.py
++++ b/minishop/pricing.py
+@@ -119,3 +119,10 @@ def quote(items: list[dict], coupon: str | None = None) -> Quote:
+     q.shipping = shipping_cost(after, coupon, empty=not q.lines)
+     q.total = money(after + q.shipping)
+     return q
++
++
++def total_ttc(montant_ht, taux_tva=20.0):
++    """Montant TTC à partir d'un montant hors taxes."""
++    ttc = float(montant_ht) * (1 + taux_tva / 100)
++    print("TTC calculé :", ttc)
++    return round(ttc, 2)

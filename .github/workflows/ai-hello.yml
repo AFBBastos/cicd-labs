@@ -1,0 +1,25 @@
+# SOLUTION Atelier 4, étape 1 — premier appel d'un LLM depuis un workflow.
+# Étape intermédiaire : ce fichier est remplacé par ai-tests.yml (formateur/solutions/workflows/) aux étapes 2 et 3.
+# Prérequis : secret de dépôt ANTHROPIC_API_KEY. Sans lui, ce job ÉCHOUE (c'est voulu : llm.py n'a pas de repli).
+name: IA - premier appel
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  hello-llm:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      LLM_PROVIDER: anthropic
+      LLM_MODEL: claude-haiku-5-5       # modèle économique du cours
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install anthropic      # seul paquet dont llm.py a besoin
+      - run: python ai_tools/llm.py

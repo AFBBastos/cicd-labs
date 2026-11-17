@@ -1,0 +1,80 @@
+# SOLUTION Ateliers 3 & 4 — Génération de tests et revue de PR par IA (API Claude d'Anthropic)
+# Prérequis : secret de dépôt ANTHROPIC_API_KEY (clé à quota limité) (Settings > Secrets and variables > Actions).
+# Sans ce secret, le workflow reste vert : les outils se replient sur le moteur offline.
+# Vérifier dans le log des deux jobs la ligne « (moteur : anthropic) », et non « repli sur le moteur offline ».
+# PR venant d'un fork ou de Dependabot : d'après la documentation de GitHub, le workflow n'y reçoit pas les
+# secrets du dépôt et son GITHUB_TOKEN est en lecture seule. Conséquences attendues (non vérifiées sur une
+# telle PR) : moteur offline, et commentaire impossible à poster. L'étape de commentaire émet alors un
+# avertissement au lieu de faire échouer le job ; la revue reste lisible dans le résumé du run.
+# GitHub Models (jeton automatique + `models: read`) a été arrêté par GitHub le 30 juillet 2026.
+# Variantes : LLM_PROVIDER: mistral + MISTRAL_API_KEY, ou sans clé : Ollama sur le runner (voir énoncé de l'Atelier 4) — lent et peu fiable sur CPU.
+name: IA - tests
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write    # pour commenter la PR
+
+jobs:
+  generate-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15                  # un appel au modèle peut attendre jusqu'à LLM_TIMEOUT (600 s par défaut)
+    env:
+      LLM_PROVIDER: anthropic
+      LLM_MODEL: claude-haiku-5-5       # modèle économique : ne pas monter en gamme sans surveiller le quota
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}   # absent ou vide -> repli immédiat sur le moteur offline
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12", cache: pip }
+      - run: pip install -r requirements-dev.txt
+      - name: Générer les tests depuis la spécification
+        id: gen
+        continue-on-error: true            # un test généré qui échoue = signal à analyser, pas un blocage
+        run: |
+          python ai_tools/generate_tests.py specs/pricing.feature \
+            --source minishop/pricing.py --out tests/generated/test_pricing_ai.py
+      - name: Mesurer la valeur ajoutée (couverture avant / après)
+        run: |
+          # On ne garde que la ligne TOTAL et le décompte final. `|| true` : un test généré en échec ne doit
+          # pas interrompre la mesure ; il apparaît en « failed » dans le résumé.
+          pytest -m "unit and not generated" --cov -q --cov-report=term > before.log || true
+          pytest -m unit --cov -q --cov-report=term > after.log || true
+          grep -E "^TOTAL| (passed|failed)" before.log | tee before.txt
+          grep -E "^TOTAL| (passed|failed)" after.log | tee after.txt
+          {
+            echo "### Tests générés par IA"
+            echo "Résultat génération : ${{ steps.gen.outcome }}"
+            echo '```'; echo "Avant :"; cat before.txt; echo "Après :"; cat after.txt; echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: tests-generes-ia
+          path: tests/generated/
+
+  ai-review:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      LLM_PROVIDER: anthropic
+      LLM_MODEL: claude-haiku-5-5       # modèle économique : ne pas monter en gamme sans surveiller le quota
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}   # absent ou vide -> repli immédiat sur le moteur offline
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }           # historique complet pour le diff
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install anthropic          # seul paquet nécessaire à la revue
+      - run: python ai_tools/review_pr.py --base origin/${{ github.base_ref }} --out reports/ai-review.md
+      - name: Copier la revue dans le résumé du run
+        run: cat reports/ai-review.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Commenter la PR (met à jour le dernier commentaire du bot)
+        run: |
+          gh pr comment ${{ github.event.pull_request.number }} --body-file reports/ai-review.md --edit-last \
+          || gh pr comment ${{ github.event.pull_request.number }} --body-file reports/ai-review.md \
+          || echo "::warning::Commentaire non posté (jeton en lecture seule ? PR d'un fork ou de Dependabot). La revue est dans le résumé du run."
