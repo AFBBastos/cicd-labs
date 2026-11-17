@@ -1,4 +1,12 @@
-"""Tests de régression visuelle (Atelier 7).
+"""Tests de régression visuelle — SOLUTION Atelier 7 (étape 5 : contenu dynamique).
+
+Par rapport au fichier du dépôt stagiaires, une seule chose change : toutes les captures
+masquent les zones dont le contenu varie d'une exécution à l'autre (ici l'heure affichée
+dans l'en-tête, `data-testid="clock"`). Playwright recouvre la zone d'un rectangle de
+couleur unie avant de capturer : la référence et la capture courante portent le même
+rectangle, la comparaison ne voit plus l'heure. Un localisateur qui ne trouve aucun
+élément ne masque rien : ce fichier fonctionne aussi sur la page d'origine, sans horloge.
+Les références doivent être régénérées une fois avec le masque.
 
 Premier lancement : les baselines n'existent pas -> elles sont créées et le test est
 « skipped ». Committez tests/visual/baselines/*.png ; les lancements suivants comparent.
@@ -26,12 +34,15 @@ pytestmark = pytest.mark.visual
 HERE = Path(__file__).parent
 BASE, CURRENT, DIFF = HERE / "baselines", HERE / "current", HERE / "diff"
 
+# Sélecteurs des zones à contenu variable (heure, numéro de commande, bandeau…).
+DYNAMIC = ['[data-testid="clock"]']
+
 
 def check(page: Page, name: str, **kwargs):
     name = f"{name}-{page.context.browser.browser_type.name}"
     CURRENT.mkdir(exist_ok=True)
     current = CURRENT / f"{name}.png"
-    page.screenshot(path=str(current), **kwargs)
+    page.screenshot(path=str(current), mask=[page.locator(s) for s in DYNAMIC], **kwargs)
     baseline = BASE / f"{name}.png"
     if not baseline.exists() or os.getenv("UPDATE_BASELINES") == "1":
         BASE.mkdir(exist_ok=True)
