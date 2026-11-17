@@ -1,0 +1,95 @@
+# SOLUTION Ateliers 7 & 8 — Tests E2E et visuels (Playwright)
+name: E2E & visuel
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:   # lancement manuel : régénère les références visuelles (job « baselines »)
+
+permissions:
+  contents: read
+
+jobs:
+  e2e:
+    if: github.event_name != 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        browser: [chromium, firefox]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12", cache: pip }
+      - run: pip install -r requirements-dev.txt
+      - run: python -m playwright install --with-deps ${{ matrix.browser }}
+      - name: Démarrer l'application
+        run: |
+          uvicorn minishop.api:app --port 8000 &
+          timeout 30 bash -c 'until curl -sf localhost:8000/health; do sleep 1; done'
+      - name: Tests E2E
+        run: >
+          pytest -m e2e --browser ${{ matrix.browser }}
+          --tracing retain-on-failure --screenshot only-on-failure --video retain-on-failure
+          --output test-results --junitxml=reports/e2e-${{ matrix.browser }}.xml
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-traces-${{ matrix.browser }}   # ouvrir avec : playwright show-trace trace.zip
+          path: test-results/
+
+  visual:
+    if: github.event_name != 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12", cache: pip }
+      - run: pip install -r requirements-dev.txt
+      - run: python -m playwright install --with-deps chromium
+      - run: |
+          uvicorn minishop.api:app --port 8000 &
+          timeout 30 bash -c 'until curl -sf localhost:8000/health; do sleep 1; done'
+      - name: Régression visuelle
+        shell: bash   # active pipefail : un échec de pytest n'est pas masqué par tee
+        run: |
+          pytest -m visual -rs | tee visual.log
+          # Sans référence commitée, le test crée la référence et se déclare « skipped » :
+          # rien n'a été comparé. Un job vert serait trompeur, on échoue explicitement.
+          if grep -q "Baseline créée" visual.log; then
+            msg="Référence visuelle absente : rien n'a été comparé. Lancez ce workflow à la main (Run workflow), téléchargez l'artefact visual-baselines et commitez son contenu dans tests/visual/baselines/."
+            echo "::error::$msg"
+            echo "$msg" >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: visual-diffs
+          path: |
+            tests/visual/baselines/
+            tests/visual/current/
+            tests/visual/diff/
+
+  # Références générées dans l'environnement où elles seront comparées (jamais sur un poste).
+  baselines:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12", cache: pip }
+      - run: pip install -r requirements-dev.txt
+      - run: python -m playwright install --with-deps chromium
+      - run: |
+          uvicorn minishop.api:app --port 8000 &
+          timeout 30 bash -c 'until curl -sf localhost:8000/health; do sleep 1; done'
+      - name: Régénérer les références
+        run: pytest -m visual -rs
+        env:
+          UPDATE_BASELINES: "1"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: visual-baselines   # à regarder, puis à commiter dans tests/visual/baselines/
+          path: tests/visual/baselines/*.png
+          if-no-files-found: error
