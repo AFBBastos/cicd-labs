@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Alertes SpotBugs / FindSecBugs écartées après analyse. Chaque exclusion est justifiée :
+     une exclusion sans raison écrite est une dette de sécurité. -->
+<FindBugsFilter>
+  <!-- Injection de dépendances Spring : les composants gardent une référence vers le registre de
+       métriques partagé. C'est voulu, il n'y a pas de copie défensive à faire. -->
+  <Match>
+    <Package name="fr.minishop.api"/>
+    <Bug pattern="EI_EXPOSE_REP2"/>
+  </Match>
+  <!-- Le tirage aléatoire ne sert qu'à la durée du bug de lenteur injectable (MINISHOP_BUG=slow) :
+       aucun usage cryptographique. -->
+  <Match>
+    <Class name="fr.minishop.api.ObservabilityFilter"/>
+    <Bug pattern="PREDICTABLE_RANDOM"/>
+  </Match>
+</FindBugsFilter>

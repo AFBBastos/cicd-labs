@@ -1,0 +1,18 @@
+{
+    // Tests de mutation : Infection modifie src/ et vérifie que les tests s'en aperçoivent.
+    "$schema": "vendor/infection/infection/resources/schema.json",
+    "source": {
+        "directories": ["src"],
+        // Seul le cœur métier est muté : la couche HTTP est jugée par les tests d'API, pas par la suite unitaire.
+        "excludes": ["Http"]
+    },
+    "mutators": {
+        "@default": true
+    },
+    // Suite jugée ; pour les tests générés : --test-framework-options="--testsuite=generated"
+    "testFrameworkOptions": "--testsuite=unit",
+    "logs": {
+        "text": "reports/infection.log",
+        "html": "reports/infection.html"
+    }
+}

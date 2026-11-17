@@ -1,0 +1,7 @@
+{
+  "stryker-config": {
+    "project": "MiniShop.csproj",
+    "reporters": ["cleartext", "html"],
+    "thresholds": { "high": 90, "low": 70, "break": 0 }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "$schema": "./node_modules/@stryker-mutator/core/schema/stryker-schema.json",
+  "testRunner": "vitest",
+  "vitest": { "dir": "tests/generated" },
+  "mutate": ["src/pricing.js"],
+  "coverageAnalysis": "perTest",
+  "ignoreStatic": true,
+  "reporters": ["clear-text", "progress", "html"],
+  "clearTextReporter": { "logTests": false },
+  "htmlReporter": { "fileName": "reports/mutation/generated.html" },
+  "thresholds": { "high": 80, "low": 60, "break": null }
+}

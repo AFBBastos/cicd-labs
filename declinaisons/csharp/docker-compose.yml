@@ -1,0 +1,7 @@
+# Application MiniShop en C# : docker compose up -d --build   ->  http://localhost:8000
+services:
+  minishop:
+    build: .
+    ports: ["8000:8000"]
+    environment:
+      MINISHOP_BUG: ${MINISHOP_BUG:-}

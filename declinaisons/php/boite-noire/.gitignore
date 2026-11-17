@@ -1,0 +1,4 @@
+/vendor/
+/reports/
+/captures/
+/.phpunit.cache/

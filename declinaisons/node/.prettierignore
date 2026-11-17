@@ -1,0 +1,8 @@
+coverage/
+reports/
+.stryker-tmp/
+package-lock.json
+ateliers/
+README.md
+test-results/
+src/static/

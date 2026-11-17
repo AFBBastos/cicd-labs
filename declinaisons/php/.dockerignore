@@ -1,0 +1,9 @@
+# Seuls composer.*, public/, resources/, src/ et docker/ entrent dans l'image
+vendor/
+boite-noire/
+tests/
+tools/
+ateliers/
+reports/
+.phpunit.cache/
+*.md

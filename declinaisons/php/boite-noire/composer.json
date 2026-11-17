@@ -1,0 +1,36 @@
+{
+    "name": "minishop/boite-noire",
+    "description": "Tests boîte noire de MiniShop (API et bout en bout) contre l'application lancée dans Docker — Ateliers 8 et 9",
+    "type": "project",
+    "license": "MIT",
+    "require": {
+        "php": ">=8.3"
+    },
+    "require-dev": {
+        "guzzlehttp/guzzle": "^8.5",
+        "phpunit/phpunit": "^12.5",
+        "symfony/panther": "^2.4"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "MiniShop\\BoiteNoire\\": "tests/"
+        }
+    },
+    "scripts": {
+        "api": "phpunit --testsuite api",
+        "e2e": "phpunit --testsuite e2e",
+        "selenium": "phpunit --testsuite selenium"
+    },
+    "scripts-descriptions": {
+        "api": "Tests d'API (Guzzle) contre MINISHOP_URL, http://localhost:8000 par défaut",
+        "e2e": "Tests de bout en bout (Symfony Panther) contre MINISHOP_URL",
+        "selenium": "Tests Selenium (php-webdriver) ; chromedriver doit tourner sur SELENIUM_URL"
+    },
+    "config": {
+        "sort-packages": true,
+        "process-timeout": 0,
+        "platform": {
+            "php": "8.3.0"
+        }
+    }
+}

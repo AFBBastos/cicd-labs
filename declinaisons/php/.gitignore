@@ -1,0 +1,6 @@
+vendor/
+reports/
+.phpunit.cache/
+/.php-cs-fixer.cache
+/infection.log
+/psalm.sarif

@@ -1,0 +1,18 @@
+# Serveur de l'image Docker : FrankenPHP (Caddy + PHP dans un seul processus).
+{
+	frankenphp {
+		# Un fil PHP par requête en cours. Le nombre par défaut (2 par cœur) serait vite épuisé par des
+		# requêtes qui attendent (bug injectable « slow », tests de charge) et tout le serveur ralentirait :
+		# on en démarre 256 et on laisse FrankenPHP en créer jusqu'à 512 à la demande.
+		num_threads 256
+		max_threads 512
+	}
+	admin off
+	auto_https off
+}
+
+:8000 {
+	root * /app/public
+	# Tout passe par public/index.php : les fichiers statiques sont servis par l'application elle-même.
+	php_server
+}

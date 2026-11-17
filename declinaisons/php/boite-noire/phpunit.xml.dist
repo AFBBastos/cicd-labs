@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         cacheDirectory=".phpunit.cache"
+         colors="true"
+         failOnWarning="true"
+         failOnRisky="true">
+    <testsuites>
+        <!-- Atelier 9 : tests d'API -->
+        <testsuite name="api">
+            <directory>tests/Api</directory>
+        </testsuite>
+        <!-- Atelier 8 : tests de bout en bout dans un navigateur -->
+        <testsuite name="e2e">
+            <directory>tests/E2e</directory>
+        </testsuite>
+        <!-- Atelier 8, partie B : Selenium « nu », pour comparer -->
+        <testsuite name="selenium">
+            <directory>tests/Selenium</directory>
+        </testsuite>
+    </testsuites>
+    <extensions>
+        <!-- Panther : arrête le navigateur en fin de suite et prend une capture en cas d'échec -->
+        <bootstrap class="Symfony\Component\Panther\ServerExtension"/>
+    </extensions>
+</phpunit>

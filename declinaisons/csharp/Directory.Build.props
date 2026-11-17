@@ -1,0 +1,21 @@
+<Project>
+  <!-- Réglages communs à la bibliothèque et au projet de tests. -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+
+    <!-- Qualité : analyseurs Roslyn (dont les règles de sécurité CA2xxx / CA5xxx) et style vérifiés à la compilation. -->
+    <AnalysisLevel>latest-recommended</AnalysisLevel>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <!-- Nécessaire pour que IDE0005 (using inutiles) soit vérifié à la compilation ;
+         en contrepartie, on n'exige pas un commentaire de documentation sur chaque membre public (CS1591). -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+
+    <!-- Verrouillage des dépendances : packages.lock.json (clé du cache NuGet dans la CI). -->
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+  </PropertyGroup>
+</Project>

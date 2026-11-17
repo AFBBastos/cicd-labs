@@ -1,0 +1,33 @@
+# Règles de mise en forme et de style, vérifiées par « dotnet format » et par la compilation.
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 4
+
+[*.{csproj,props,slnx,json,yml,yaml}]
+indent_size = 2
+
+[*.md]
+trim_trailing_whitespace = false
+
+[*.cs]
+max_line_length = 120
+dotnet_sort_system_directives_first = true
+csharp_style_namespace_declarations = file_scoped:warning
+csharp_using_directive_placement = outside_namespace:warning
+csharp_prefer_braces = true:warning
+dotnet_style_require_accessibility_modifiers = for_non_interface_members:warning
+dotnet_style_readonly_field = true:warning
+# using inutiles
+dotnet_diagnostic.IDE0005.severity = warning
+# variable locale jamais utilisée
+dotnet_diagnostic.IDE0059.severity = warning
+
+[tests/**.cs]
+# Les noms de tests décrivent une règle métier : les tirets bas sont voulus.
+dotnet_diagnostic.CA1707.severity = none

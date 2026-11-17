@@ -1,0 +1,32 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+.coverage
+coverage.xml
+htmlcov/
+reports/
+# Données simulées (python scripts/simulate_history.py) : à régénérer, pas à versionner
+data/
+allure-results/
+allure-report/
+logs/
+site/
+test-results/
+tests/visual/current/
+tests/visual/diff/
+.pytest_cache/
+.ruff_cache/
+# Déclinaisons PHP / Java / Node.js / C# : dépendances et sorties de build
+declinaisons/**/vendor/
+declinaisons/**/node_modules/
+declinaisons/**/target/
+declinaisons/**/bin/
+declinaisons/**/obj/
+declinaisons/**/coverage/
+declinaisons/**/TestResults/
+declinaisons/**/StrykerOutput/
+declinaisons/**/.phpunit.cache/
+declinaisons/**/.php-cs-fixer.cache
+declinaisons/**/.stryker-tmp/
+declinaisons/**/infection.log

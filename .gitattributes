@@ -1,0 +1,8 @@
+# Fins de ligne LF partout : plusieurs fichiers sont montés dans des conteneurs Linux (ZAP, Prometheus…)
+# et un clone Windows les convertirait sinon en CRLF.
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.ico binary
+*.pkl binary
+*.joblib binary
