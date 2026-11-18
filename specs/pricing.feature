@@ -71,7 +71,7 @@ Fonctionnalité: Calcul du total d'un panier
     Étant donné un panier avec 2 "tshirt"
     Quand j'applique le coupon "FIXED5"
     Et je calcule le total 
-    Alors un remise de 5.00
+    Alors la remise vaut 5.00
     Et le total vaut 39.70
   
   Scénario: remise volume + WELCOME10
