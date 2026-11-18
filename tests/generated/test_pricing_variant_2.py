@@ -10,8 +10,9 @@
 #   remise volume 5 % dès 10 unités (arrondi half-up au centime)
 #   WELCOME10 : 10 % du sous-total ; FIXED5 : 5.00 fixes ; FREESHIP : livraison offerte
 
+from decimal import ROUND_HALF_UP, Decimal
+
 import pytest
-from decimal import Decimal, ROUND_HALF_UP
 
 from minishop.pricing import quote
 
