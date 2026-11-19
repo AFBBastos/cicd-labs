@@ -92,7 +92,8 @@ def render_llm(spec: str, source: str, spec_name: str, prompt_file: Path, temper
     system = prompt_file.read_text(encoding="utf-8")
     source_section = f"## Code source sous test\n\n```python\n{source}\n```" if source else ""
     user = (
-        f"## Spécification ({spec_name})\n\n{spec}\n\n{source_section}".rstrip()
+        f"## Spécification ({spec_name})\n\n{spec}\n\n"
+        f"{source_section}".rstrip()
         + "\n\nGénère le fichier de tests complet."
     )
     return extract_code(chat(system, user, temperature=temperature))
@@ -126,15 +127,12 @@ def main() -> int:
     else:
         try:
             source = "" if args.no_source else args.source.read_text(encoding="utf-8")
-            engine, code = (
-                provider(),
-                render_llm(
-                    spec,
-                    source,
-                    args.spec.name,
-                    args.prompt_file,
-                    args.temperature,
-                ),
+            engine, code = provider(), render_llm(
+                spec,
+                source,
+                args.spec.name,
+                args.prompt_file,
+                args.temperature,
             )
         except LLMError as exc:
             print(f"[!] LLM indisponible ({exc}) -> repli sur le moteur offline", file=sys.stderr)

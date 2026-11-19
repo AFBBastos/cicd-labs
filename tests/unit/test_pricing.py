@@ -39,7 +39,7 @@ def test_line_total_sans_remise():
 @pytest.mark.parametrize(
     "qty, expected",
     [
-        (9, Decimal("90.00")),  # juste en dessous du seuil : pas de remise
+        (9, Decimal("90.00")),   # juste en dessous du seuil : pas de remise
         (10, Decimal("95.00")),  # seuil inclus : remise de 5 %
     ],
 )
@@ -80,8 +80,8 @@ def test_line_total_quantite_invalide(qty):
     [
         ("WELCOME10", Decimal("19.99"), Decimal("0.00")),  # sous-total < 20 € -> pas de remise
         ("WELCOME10", Decimal("20.00"), Decimal("2.00")),  # sous-total >= 20 € -> remise de 10 %
-        ("FIXED5", Decimal("29.99"), Decimal("0.00")),  # sous-total < 30 € -> pas de remise
-        ("FIXED5", Decimal("30.00"), Decimal("5.00")),  # sous-total >= 30 € -> remise fixe de 5 €
+        ("FIXED5", Decimal("29.99"), Decimal("0.00")),     # sous-total < 30 € -> pas de remise
+        ("FIXED5", Decimal("30.00"), Decimal("5.00")),     # sous-total >= 30 € -> remise fixe de 5 €
     ],
 )
 def test_coupon_discount(coupon, subtotal, expected_discount):
@@ -122,8 +122,8 @@ def test_free_shipping_coupon():
 @pytest.mark.parametrize(
     "items, coupon, expected_shipping",
     [
+        ([{"product_id": "mug", "qty": 4}], None, Decimal("0.00")),    # 4 × 12.50 = 50.00 -> livraison offerte
         ([{"product_id": "tshirt", "qty": 2}], None, Decimal("4.90")),  # 2 × 19.90 = 39.80 -> frais standard
-        ([{"product_id": "mug", "qty": 4}], None, Decimal("0.00")),  # 4 × 12.50 = 50.00 -> livraison offerte
     ],
 )
 def test_shipping_threshold(items, coupon, expected_shipping):
@@ -153,7 +153,7 @@ def test_unknown_product_raises_keyerror():
     [
         (Decimal("10.00"), Decimal("1.50")),  # 10 € * 15 % = 1.50
         (Decimal("20.00"), Decimal("3.00")),  # 20 € * 15 % = 3.00
-        (Decimal("1.00"), Decimal("0.15")),  # pas de minimum : coupon appliqué même sur un petit montant
+        (Decimal("1.00"), Decimal("0.15")),   # pas de minimum : coupon appliqué même sur un petit montant
     ],
 )
 def test_student15_applies_without_minimum(subtotal, expected):
