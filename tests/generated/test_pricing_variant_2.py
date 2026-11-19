@@ -16,7 +16,7 @@ import pytest
 
 from minishop.pricing import quote
 
-pytestmark = [pytest.mark.generated, pytest.mark.unit]
+pytestmark = pytest.mark.generated
 
 D = Decimal
 
