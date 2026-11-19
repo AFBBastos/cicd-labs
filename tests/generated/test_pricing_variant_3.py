@@ -4,7 +4,7 @@ import pytest
 
 from minishop.pricing import money, quote
 
-pytestmark = [pytest.mark.generated, pytest.mark.unit]
+pytestmark = pytest.mark.generated
 
 # Prix déduits de la spécification :
 #   mug = 12.50 €, sticker = 2.45 €, tshirt = 19.90 €, hoodie = 44.00 €

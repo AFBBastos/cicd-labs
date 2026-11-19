@@ -2,12 +2,13 @@
 # Prix déduits de la spécification (le module catalog n'est pas fourni) :
 #   mug = 12.50 €, hoodie = 44.00 €, sticker = 2.45 €, tshirt = 19.90 €.
 
-import pytest
 from decimal import Decimal
 
-from minishop.pricing import quote, money
+import pytest
 
-pytestmark = [pytest.mark.generated, pytest.mark.unit]
+from minishop.pricing import money, quote
+
+pytestmark = pytest.mark.generated
 
 
 def _items(*pairs):
