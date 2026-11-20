@@ -1,6 +1,9 @@
 {
   "info": {"name": "MiniShop API", "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"},
-  "variable": [{"key": "baseUrl", "value": "http://localhost:8000"}],
+  "variable": [
+    {"key": "baseUrl", "value": "http://localhost:8000"},
+    {"key": "orderId", "value": ""}
+  ],
   "item": [
     {"name": "Health", "request": {"method": "GET", "url": "{{baseUrl}}/health"},
      "event": [{"listen": "test", "script": {"exec": [
@@ -16,6 +19,19 @@
     {"name": "Coupon inconnu -> 422", "request": {"method": "POST", "url": "{{baseUrl}}/cart/quote",
       "header": [{"key": "Content-Type", "value": "application/json"}],
       "body": {"mode": "raw", "raw": "{\"items\":[{\"product_id\":\"mug\",\"qty\":1}],\"coupon\":\"NOEL\"}"}},
-     "event": [{"listen": "test", "script": {"exec": ["pm.test('422', () => pm.response.to.have.status(422));"]}}]}
+     "event": [{"listen": "test", "script": {"exec": ["pm.test('422', () => pm.response.to.have.status(422));"]}}]},
+    {"name": "Créer une commande (201)", "request": {"method": "POST", "url": "{{baseUrl}}/orders",
+      "header": [{"key": "Content-Type", "value": "application/json"}],
+      "body": {"mode": "raw", "raw": "{\"items\":[{\"product_id\":\"mug\",\"qty\":2}]}"}},
+     "event": [{"listen": "test", "script": {"exec": [
+       "pm.test('201', () => pm.response.to.have.status(201));",
+       "const created = pm.response.json();",
+       "pm.test('id présent', () => pm.expect(created.id).to.be.a('string').and.not.empty);",
+       "pm.collectionVariables.set('orderId', created.id);"]}}]},
+    {"name": "Relire la commande créée (200)", "request": {"method": "GET", "url": "{{baseUrl}}/orders/{{orderId}}"},
+     "event": [{"listen": "test", "script": {"exec": [
+       "pm.test('200', () => pm.response.to.have.status(200));",
+       "const fetched = pm.response.json();",
+       "pm.test('même orderId', () => pm.expect(fetched.id).to.eql(pm.collectionVariables.get('orderId')));"]}}]}
   ]
 }

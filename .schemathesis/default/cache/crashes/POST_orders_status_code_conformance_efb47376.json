@@ -1,0 +1,215 @@
+{
+  "operation": "POST /orders",
+  "method": "POST",
+  "path_template": "/orders",
+  "fingerprint": "efb47376",
+  "case_id": "WDUO3t",
+  "code_sample": "curl -X GET http://localhost:8000/products\ncurl -X POST -H 'Content-Type: application/json' -d '{\"\\udad3\\udeba\\u00c2w\\ud869\\udd83L\\u00f9\\udabd\\udcab\\u00f7\\u00a4\\u00ca\": {}, \"\\udad3\\udff0<\\u00b0\": [[\"\", null, -1.192092896e-07]], \"\": [], \"undefined\": true, \"\\u0007\\u009aXi\\udb28\\udf53\\u00e2\": \"9Fi\\uda77\\ude1a\\u0006\\u008c\", \"items\": [{\"\\u00b3\": {}, \"^>\\u00fd\\u00bd\": {\"A\\u00acR\\udb79\\udd18\\udb44\\udd23$\\ud814\\udff5\\u00de\": {}}, \"qty\": 64, \"product_id\": \"[:\\u00d9\\u00ee\\u009bl\\u0083\\u0087\\ud935\\udc59\\udaaf\\udd87{pF\\u00dd\"}, {\"\": {\":\\u0006\\u00b2{}e\\u00c8\\u00f0=Y\": -1.175494351e-38, \"Z\\u0094\\u0087\": -9683}, \"]6\\u00e7\\u0000MB7\\u00eb\\ud931\\udfd5\\u001b\\u0091\\ud848\\uddaf\\udb30\\udfc2'\"'\"'\\u00c6\": [[-1.7976931348623155e+308, \"\\u00b7\\u00a8-\", 6.06561417997024e+16], {}, {\"\": -5.022353396996819e-252}], \"\\u00c0\\u00e3\\u00e2\\u009f\\u009a\\u00f7\\udafc\\ude3d \": 2452, \"product_id\": \"\\u00a5\\u00f3#X\\u00e7\\u00f3\\u008b\\u0018^\\udb2b\\udeca\\u00fbu\", \"qty\": 70.0}, {\"\\u0097\": [false, 7.777133870171701e-156, -213], \"\\udaac\\udeb5\": {}, \"\\u0019\\u00f4%\\r\": \"$h\\u00ac\\u00c9\", \"VF\": {\"\\uda32\\uddff0\\uda42\\uddfe\": {}}, \"\\u00c7\\u000e\": {\"\\u00bb\\udac5\\ude36\\uda2a\\udc2b^\\u0019x\\u00bd\\u00b0m\\u00ed\\ud930\\udd7e\\u00a8\\u00a6(\\u38e7X\\u0003\\u0017\\u0001\": [], \")\\u00db\\udb46\\udd0d-od\\u0098\": [-6040, \"\\b\\u009a\\u0005P\\u00f6\"]}, \"product_id\": \"\\u00fb\\u009e\\u00d5\\udb10\\udc14\\u001f\\udaab\\udf6c\\u00a5\\u00c0\\u008b\\\"\\u0010\\uda33\\ude39\\u0005\\ud8bd\\udeb0\", \"qty\": 36.0}]}' http://localhost:8000/orders",
+  "sequence": [
+    {
+      "method": "GET",
+      "url": "http://localhost:8000/products",
+      "url_template": "http://localhost:8000/products",
+      "headers": {
+        "User-Agent": "schemathesis/4.33.4",
+        "Accept-Encoding": "gzip, deflate, br, zstd",
+        "Accept": "*/*",
+        "Connection": "keep-alive",
+        "X-Schemathesis-TestCaseId": "CxHjzf"
+      },
+      "response": {
+        "status_code": 200,
+        "headers": {
+          "date": "Fri, 20 Nov 2026 13:11:12 GMT",
+          "server": "uvicorn",
+          "content-length": "407",
+          "content-type": "application/json"
+        },
+        "body": "[{\"id\":\"mug\",\"name\":\"Mug \u00ab It works on my machine \u00bb\",\"price\":\"12.50\",\"stock\":120},{\"id\":\"tshirt\",\"name\":\"T-shirt \u00ab Green pipeline \u00bb\",\"price\":\"19.90\",\"stock\":40},{\"id\":\"sticker\",\"name\":\"Lot de stickers YAML\",\"price\":\"2.45\",\"stock\":1000},{\"id\":\"hoodie\",\"name\":\"Sweat \u00ab Shift left \u00bb\",\"price\":\"44.00\",\"stock\":15},{\"id\":\"book\",\"name\":\"Livre \u00ab Tests automatis\u00e9s en 21 jours \u00bb\",\"price\":\"29.99\",\"stock\":8}]"
+      },
+      "link": null,
+      "checks": [],
+      "meta": {
+        "generation": {
+          "time": 8.426500062341802e-05,
+          "mode": "positive"
+        },
+        "components": {},
+        "phase": {
+          "name": "stateful",
+          "data": {
+            "type": "StatefulPhaseData",
+            "description": "Positive test case",
+            "location": null,
+            "parameter": null,
+            "parameter_location": null,
+            "mutations": []
+          }
+        },
+        "pool_draws": [],
+        "pool_misses": [],
+        "semantic_draws": [],
+        "dictionary_draws": [],
+        "constants_draws": [],
+        "raw_containers": {}
+      },
+      "path": "/products",
+      "path_parameters": {},
+      "query": {},
+      "case_headers": {},
+      "cookies": {},
+      "case_body": {
+        "encoding": "none"
+      },
+      "media_type": null,
+      "parent_index": null,
+      "auth_identity": null,
+      "operation": "GET /products"
+    },
+    {
+      "method": "POST",
+      "url": "http://localhost:8000/orders",
+      "url_template": "http://localhost:8000/orders",
+      "headers": {
+        "User-Agent": "schemathesis/4.33.4",
+        "Accept-Encoding": "gzip, deflate, br, zstd",
+        "Accept": "*/*",
+        "Connection": "keep-alive",
+        "X-Schemathesis-TestCaseId": "WDUO3t",
+        "Content-Type": "application/json",
+        "Content-Length": "1327"
+      },
+      "response": {
+        "status_code": 404,
+        "headers": {
+          "date": "Fri, 20 Nov 2026 13:11:12 GMT",
+          "server": "uvicorn",
+          "content-length": "80",
+          "content-type": "application/json"
+        },
+        "body": "{\"detail\":\"Produit inconnu : [:\u00d9\u00ee\\\\x9bl\\\\x83\\\\x87\\\\U0005d459\\\\U000bbd87{pF\u00dd\"}"
+      },
+      "link": {
+        "operationId": "GET /products -> [200] PostProduct_0 -> POST /orders",
+        "parameters": {},
+        "requestBody": {
+          "items": [
+            {
+              "product_id": "$response.body#/id"
+            }
+          ]
+        }
+      },
+      "checks": [
+        {
+          "name": "status_code_conformance",
+          "status": "failure",
+          "message": "Undocumented status code\n\nReceived: 404\nDocumented: 201, 422"
+        }
+      ],
+      "meta": {
+        "generation": {
+          "time": 0.006084993998229038,
+          "mode": "positive"
+        },
+        "components": {
+          "BODY": "positive"
+        },
+        "phase": {
+          "name": "stateful",
+          "data": {
+            "type": "StatefulPhaseData",
+            "description": "Positive test case",
+            "location": null,
+            "parameter": null,
+            "parameter_location": null,
+            "mutations": []
+          }
+        },
+        "pool_draws": [],
+        "pool_misses": [],
+        "semantic_draws": [],
+        "dictionary_draws": [],
+        "constants_draws": [],
+        "raw_containers": {}
+      },
+      "path": "/orders",
+      "path_parameters": {},
+      "query": {},
+      "case_headers": {},
+      "cookies": {},
+      "case_body": {
+        "encoding": "json",
+        "value": {
+          "\udad3\udeba\u00c2w\ud869\udd83L\u00f9\udabd\udcab\u00f7\u00a4\u00ca": {},
+          "\udad3\udff0<\u00b0": [
+            [
+              "",
+              null,
+              -1.192092896e-07
+            ]
+          ],
+          "": [],
+          "undefined": true,
+          "\u0007\u009aXi\udb28\udf53\u00e2": "9Fi\uda77\ude1a\u0006\u008c",
+          "items": [
+            {
+              "\u00b3": {},
+              "^>\u00fd\u00bd": {
+                "A\u00acR\udb79\udd18\udb44\udd23$\ud814\udff5\u00de": {}
+              },
+              "qty": 64,
+              "product_id": "[:\u00d9\u00ee\u009bl\u0083\u0087\ud935\udc59\udaaf\udd87{pF\u00dd"
+            },
+            {
+              "": {
+                ":\u0006\u00b2{}e\u00c8\u00f0=Y": -1.175494351e-38,
+                "Z\u0094\u0087": -9683
+              },
+              "]6\u00e7\u0000MB7\u00eb\ud931\udfd5\u001b\u0091\ud848\uddaf\udb30\udfc2'\u00c6": [
+                [
+                  -1.7976931348623155e+308,
+                  "\u00b7\u00a8-",
+                  6.06561417997024e+16
+                ],
+                {},
+                {
+                  "": -5.022353396996819e-252
+                }
+              ],
+              "\u00c0\u00e3\u00e2\u009f\u009a\u00f7\udafc\ude3d ": 2452,
+              "product_id": "\u00a5\u00f3#X\u00e7\u00f3\u008b\u0018^\udb2b\udeca\u00fbu",
+              "qty": 70.0
+            },
+            {
+              "\u0097": [
+                false,
+                7.777133870171701e-156,
+                -213
+              ],
+              "\udaac\udeb5": {},
+              "\u0019\u00f4%\r": "$h\u00ac\u00c9",
+              "VF": {
+                "\uda32\uddff0\uda42\uddfe": {}
+              },
+              "\u00c7\u000e": {
+                "\u00bb\udac5\ude36\uda2a\udc2b^\u0019x\u00bd\u00b0m\u00ed\ud930\udd7e\u00a8\u00a6(\u38e7X\u0003\u0017\u0001": [],
+                ")\u00db\udb46\udd0d-od\u0098": [
+                  -6040,
+                  "\b\u009a\u0005P\u00f6"
+                ]
+              },
+              "product_id": "\u00fb\u009e\u00d5\udb10\udc14\u001f\udaab\udf6c\u00a5\u00c0\u008b\"\u0010\uda33\ude39\u0005\ud8bd\udeb0",
+              "qty": 36.0
+            }
+          ]
+        }
+      },
+      "media_type": "application/json",
+      "parent_index": 0,
+      "auth_identity": null,
+      "operation": "POST /orders"
+    }
+  ],
+  "aliases": []
+}

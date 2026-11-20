@@ -1,0 +1,85 @@
+{
+  "operation": "POST /orders",
+  "method": "POST",
+  "path_template": "/orders",
+  "fingerprint": "b4b83d34",
+  "case_id": "L0QwHM",
+  "code_sample": "curl -X POST -H 'Content-Type: application/json' -d '{\"items\": [], \"coupon\": null}' http://localhost:8000/orders",
+  "sequence": [
+    {
+      "method": "POST",
+      "url": "http://localhost:8000/orders",
+      "url_template": "http://localhost:8000/orders",
+      "headers": {
+        "User-Agent": "schemathesis/4.33.4",
+        "Accept-Encoding": "gzip, deflate, br, zstd",
+        "Accept": "*/*",
+        "Connection": "keep-alive",
+        "X-Schemathesis-TestCaseId": "L0QwHM",
+        "Content-Type": "application/json",
+        "Content-Length": "29"
+      },
+      "response": {
+        "status_code": 422,
+        "headers": {
+          "date": "Fri, 20 Nov 2026 13:11:12 GMT",
+          "server": "uvicorn",
+          "content-length": "24",
+          "content-type": "application/json"
+        },
+        "body": "{\"detail\":\"Panier vide\"}"
+      },
+      "link": null,
+      "checks": [
+        {
+          "name": "positive_data_acceptance",
+          "status": "failure",
+          "message": "Schema-valid request rejected\n\nValid data should have been accepted\nExpected: 2xx, 3xx, 401, 403, 404, 409, 429, 5xx"
+        }
+      ],
+      "meta": {
+        "generation": {
+          "time": 1.8582999473437667e-05,
+          "mode": "positive"
+        },
+        "components": {
+          "BODY": "positive"
+        },
+        "phase": {
+          "name": "coverage",
+          "data": {
+            "type": "CoveragePhaseData",
+            "description": "Object with valid 'coupon' value: Valid null value",
+            "location": null,
+            "parameter": "application/json",
+            "parameter_location": "BODY",
+            "scenario": "valid_object"
+          }
+        },
+        "pool_draws": [],
+        "pool_misses": [],
+        "semantic_draws": [],
+        "dictionary_draws": [],
+        "constants_draws": [],
+        "raw_containers": {}
+      },
+      "path": "/orders",
+      "path_parameters": {},
+      "query": {},
+      "case_headers": {},
+      "cookies": {},
+      "case_body": {
+        "encoding": "json",
+        "value": {
+          "items": [],
+          "coupon": null
+        }
+      },
+      "media_type": "application/json",
+      "parent_index": null,
+      "auth_identity": null,
+      "operation": "POST /orders"
+    }
+  ],
+  "aliases": []
+}
